@@ -1,17 +1,16 @@
-import os
 import json
 import requests
 from requests_oauthlib import OAuth1
-
-TWITTER_CONSUMER_KEY = os.getenv('TWITTER_CONSUMER_KEY')
-TWITTER_CONSUMER_SECRET = os.getenv('TWITTER_CONSUMER_SECRET')
-TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
-TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+import settings
 
 
 def main():
-    auth = OAuth1(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET,
-                  TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
+    auth = OAuth1(
+        settings.TWITTER_CONSUMER_KEY,
+        settings.TWITTER_CONSUMER_SECRET,
+        settings.TWITTER_ACCESS_TOKEN,
+        settings.TWITTER_ACCESS_TOKEN_SECRET
+    )
     stream = requests.get(
         'https://userstream.twitter.com/1.1/user.json',
         auth=auth,
@@ -19,6 +18,7 @@ def main():
     )
 
     for line in stream.iter_lines():
+        print(line)
         if len(line) <= 0:
             continue
         object = json.loads(line.decode('utf-8'))
@@ -40,7 +40,7 @@ def user_icon(user):
 
 
 def post_to_slack(username=None, usericon=None, text=None):
-    url = os.getenv('SLACK_POST_URL')
+    url = settings.SLACK_POST_URL
     payload = {
         'username': username,
         "icon_url": usericon,
