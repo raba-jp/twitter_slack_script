@@ -15,7 +15,7 @@ class Tweet:
         self.text = json['text']
 
 
-def main():
+def run():
     auth = OAuth1(
         settings.TWITTER_CONSUMER_KEY,
         settings.TWITTER_CONSUMER_SECRET,
@@ -38,4 +38,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()
