@@ -1,0 +1,30 @@
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=.environments.enc
+      - --plaintext-file=.environments
+      - --location=global
+      - --keyring=twitter_slack_script
+      - --key=dotenv-key
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - gcr.io/$PROJECT_ID/twitter_slack_script:$BRANCH_NAME-$REVISION_ID
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/twitter_slack_script:$BRANCH_NAME-$REVISION_ID
+
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud container clusters get-credentials clusters --zone asia-northeast1-a
+        kubectl set image deployment/scripts twitter_slack_script=gcr.io/botserver-175917/twitter_slack_script:$BRANCH_NAME-$REVISION_ID
