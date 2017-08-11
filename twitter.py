@@ -15,7 +15,7 @@ class Tweet:
         self.text = json['text']
 
 
-def run():
+def watch():
     auth = OAuth1(
         settings.TWITTER_CONSUMER_KEY,
         settings.TWITTER_CONSUMER_SECRET,
@@ -35,7 +35,3 @@ def run():
         if 'text' in object:
             tweet = Tweet(object)
             slack.post(tweet.user_name, tweet.user_icon, tweet.text)
-
-
-if __name__ == '__main__':
-    run()
