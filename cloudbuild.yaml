@@ -26,5 +26,5 @@ steps:
     args:
       - -c
       - |
-        gcloud container clusters get-credentials clusters --zone asia-northeast1-a
+        gcloud container clusters get-credentials cluster1 --zone asia-northeast1-a
         kubectl set image deployment/scripts twitter_slack_script=gcr.io/botserver-175917/twitter_slack_script:$BRANCH_NAME-$REVISION_ID
