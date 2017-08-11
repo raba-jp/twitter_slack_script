@@ -25,7 +25,8 @@ def watch():
     stream = requests.get(
         'https://userstream.twitter.com/1.1/user.json',
         auth=auth,
-        stream=True
+        stream=True,
+        timeout=(240.0, 240.0)
     )
 
     for line in stream.iter_lines():
