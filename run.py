@@ -17,14 +17,14 @@ def main():
         stream=True,
         timeout=(240.0, 240.0)
     )
-    url = 'https://twitter.com/thinca/status/{}'
+    url = 'https://twitter.com/{}/status/{}'
 
     for line in stream.iter_lines():
         if len(line) <= 0:
             continue
         object = json.loads(line.decode('utf-8'))
         if 'text' in object:
-            post(url.format(object['id_str']))
+            post(url.format(object['user']['screen_name'], object['id_str']))
 
 
 def post(text):
