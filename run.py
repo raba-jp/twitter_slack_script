@@ -3,18 +3,12 @@ import requests
 import os
 from requests_oauthlib import OAuth1
 
-SLACK_POST_URL = os.environ.get('SLACK_POST_URL')
-TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY')
-TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET')
-TWITTER_ACCESS_TOKEN = os.environ.get('TWITTER_ACCESS_TOKEN')
-TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
-
 def main():
     auth = OAuth1(
-        TWITTER_CONSUMER_KEY,
-        TWITTER_CONSUMER_SECRET,
-        TWITTER_ACCESS_TOKEN,
-        TWITTER_ACCESS_TOKEN_SECRET
+        os.environ.get('TWITTER_CONSUMER_KEY'),
+        os.environ.get('TWITTER_CONSUMER_SECRET'),
+        os.environ.get('TWITTER_ACCESS_TOKEN'),
+        os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
     )
     stream = requests.get(
         'https://userstream.twitter.com/1.1/user.json',
@@ -33,7 +27,7 @@ def main():
 
 
 def post(text):
-    url = settings.SLACK_POST_URL
+    url = os.environ.get('SLACK_POST_URL')
     payload = {
         'username': 'Twitter',
         "text": text
