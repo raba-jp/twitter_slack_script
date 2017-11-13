@@ -33,6 +33,7 @@ def post(text):
         'username': 'Twitter',
         "text": text
     }
+    print(payload)
     payload_json = json.dumps(payload)
     requests.post(url, data=payload_json)
 
