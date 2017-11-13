@@ -1,0 +1,34 @@
+---
+resources:
+  - name: repo
+    type: git
+    source:
+      uri: https://github.com/raba-jp/twitter_slack_script.git
+
+jobs:
+  - name: run
+    plan:
+      - get: repo
+      - task: run
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: python
+              tag: 3.6.3
+          inputs:
+            - name: repo
+          run:
+            path: /bin/bash
+            args:
+              - -c
+              - |
+                export SLACK_POST_URL={{slack_post_url}}
+                export TWITTER_CONSUMER_KEY={{twitter_consumer_key}}
+                export TWITTER_CONSUMER_SECRET={{twitter_consumer_key_secret}}
+                export TWITTER_ACCESS_TOKEN={{twitter_access_token}}
+                export TWITTER_ACCESS_TOKEN_SECRET={{twitter_access_token_secret}}
+                cd repo
+                pip install -r requirements.txt
+                python run.py
